@@ -1,5 +1,11 @@
 # flake8-fine-pytest
 
+[![Build Status](https://travis-ci.org/best-doctor/flake8-fine-pytest.svg?branch=master)](https://travis-ci.org/best-doctor/flake8-fine-pytest)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ea5c318a4508b00d7be2/maintainability)](https://codeclimate.com/github/best-doctor/flake8-fine-pytest/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ea5c318a4508b00d7be2/test_coverage)](https://codeclimate.com/github/best-doctor/flake8-fine-pytest/test_coverage)
+[![PyPI version](https://badge.fury.io/py/flake8-fine-pytest.svg)](https://badge.fury.io/py/flake8-fine-pytest)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/flake8-fine-pytest)
+
 An extension for flake8 that validates tests structure, extra style and readability.
 
 Right now our checker:

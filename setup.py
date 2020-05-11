@@ -39,7 +39,7 @@ setup(
     packages=find_packages(),
     python_requires='>=3.6',
     include_package_data=True,
-    keywords='flake8',
+    keywords='flake8 pytest',
     version=get_version(),
     author='BestDoctor',
     author_email='khkaterine@gmail.com',
