@@ -3,10 +3,10 @@
 An extension for flake8 that validates tests structure, extra style and readability.
 
 Right now our checker:
-    1) validates existence of reason in
+1) validates existence of reason in
 
 ```python
-    @pytest.mark.xfail(reason='Super annoying test, fix it later')
+@pytest.mark.xfail(reason='Super annoying test, fix it later')
 ```
 
 It helps everyone easily understand what was the problem in the first place

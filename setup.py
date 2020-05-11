@@ -46,7 +46,7 @@ setup(
     install_requires=['flake8', 'setuptools'],
     entry_points={
         'flake8.extension': [
-            'XR001 = flake8_fine_pytest.checker:XfailReasonChecker',
+            'FP001 = flake8_fine_pytest.checker:XfailReasonChecker',
         ],
     },
     url='https://github.com/best-doctor/flake8-fine-pytest',
