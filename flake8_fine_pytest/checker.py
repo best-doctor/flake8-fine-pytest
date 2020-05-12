@@ -36,12 +36,12 @@ class FinePytestChecker:
                 errors.append((
                     line,
                     0,
-                    'FP001 xfailed test with empty reason'
+                    'FP001 xfailed test with empty reason',
                 ))
             for line in xfail_without_reason:
                 errors.append((
                     line,
                     0,
-                    'FP002 xfailed test without reason'
+                    'FP002 xfailed test without reason',
                 ))
         return errors
