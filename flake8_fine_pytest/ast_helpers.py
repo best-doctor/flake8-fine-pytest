@@ -13,7 +13,7 @@ def get_xfail_line_numbers(ast_tree: ast.AST) -> typing.Set[int]:
 def get_xfail_reason_value(node: ast.AST, xfail_lines: typing.Set[int]) -> str:
     if isinstance(node, ast.Call) and node.lineno in xfail_lines:
         for keyword in node.keywords:
-            if keyword.arg == 'reason':
+            if keyword.arg == 'reason' and hasattr(keyword.value, 'value'):
                 return keyword.value.value  # type: ignore
     return 'Wrong ast instance'
 
