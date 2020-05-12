@@ -39,14 +39,14 @@ setup(
     packages=find_packages(),
     python_requires='>=3.6',
     include_package_data=True,
-    keywords='flake8',
+    keywords='flake8 pytest',
     version=get_version(),
     author='BestDoctor',
     author_email='khkaterine@gmail.com',
     install_requires=['flake8', 'setuptools'],
     entry_points={
         'flake8.extension': [
-            'FP001 = flake8_fine_pytest.checker:XfailReasonChecker',
+            'FP001 = flake8_fine_pytest.checker:FinePytestChecker',
         ],
     },
     url='https://github.com/best-doctor/flake8-fine-pytest',
