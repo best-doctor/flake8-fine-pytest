@@ -13,15 +13,17 @@ def get_xfail_line_numbers(ast_tree: ast.AST) -> typing.Set[int]:
 def get_xfail_reason_value(node: ast.AST, xfail_lines: typing.Set[int]) -> str:
     if isinstance(node, ast.Call) and node.lineno in xfail_lines:
         for keyword in node.keywords:
-            if keyword.arg == 'reason' and not isinstance(keyword.value, ast.expr):
-                return keyword.value.value
+            if keyword.arg == 'reason':
+                return keyword.value.value  # type: ignore
+    return 'Wrong ast instance'
 
 
 def get_xfail_reasons(ast_tree: ast.AST) -> typing.Dict:
     xfail_lines = get_xfail_line_numbers(ast_tree)
     xfail_reasons: typing.Dict = {}
     for node in ast.walk(ast_tree):
-        if get_xfail_reason_value(node, xfail_lines):
+        reason_value = get_xfail_reason_value(node, xfail_lines)
+        if reason_value != 'Wrong ast instance':
             xfail_reasons[node.lineno] = get_xfail_reason_value(node, xfail_lines)
     return xfail_reasons
 
