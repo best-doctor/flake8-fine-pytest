@@ -18,6 +18,21 @@ Right now our checker:
 It helps everyone easily understand what was the problem in the first place
 and reduces amount of time wasted on fixing xfailed tests.
 
+2) validates that test modules are in the described directories. It can be configured
+in `setup.cfg` file:
+
+  ```cfg
+  allowed_test_directories= test_unit,test_integration,test_api
+  ```
+
+If file with prefix `test_` is not in allowed directories list, it will raise
+an error:
+
+```shell
+tests/test_models.py:0:1: FP003 File tests/test_models.py is in the wrong directory.
+Allowed directories: test_unit,test_integration,test_api,test_migration
+```
+
 ## Installation
 
 ```terminal
