@@ -1,47 +1,47 @@
 import ast
-import typing
+
+from flake8.options.manager import OptionManager
+
 from flake8_fine_pytest import __version__ as version
-
-from flake8_fine_pytest.ast_helpers import get_wrong_xfail_decorator_lines
-
-ErrorType = typing.Tuple[int, int, str, type]
+from flake8_fine_pytest.watchers.modules_structure import ModulesStructureWatcher
+from flake8_fine_pytest.watchers.xfail_decorator import XfailWatcher
+from flake8_fine_pytest.common_types import CheckResult
 
 
 class FinePytestChecker:
     name = 'flake8-fine-pytest'
     version = version
+    options = None
+
+    _watchers = (
+        XfailWatcher,
+        ModulesStructureWatcher,
+    )
 
     def __init__(self, tree: ast.AST, filename: str):
         self.filename = filename
         self.tree = tree
 
-    def run(self) -> typing.Generator[ErrorType, None, None]:
-        xfail_with_empty_reason, xfail_without_reason = get_wrong_xfail_decorator_lines(self.tree)
-        errors = self.get_xfail_reason_errors(
-            xfail_with_empty_reason,
-            xfail_without_reason,
+    @classmethod
+    def add_options(cls, parser: OptionManager) -> None:
+        parser.add_option(
+            '--allowed-test-directories',
+            comma_separated_list=True,
+            parse_from_config=True,
+            help='Comma-separated list of allowed test directories',
         )
-        for error in errors:
-            yield (*error, type(self))
 
-    def get_xfail_reason_errors(
-        self,
-        xfail_with_empty_reason: typing.Set[int],
-        xfail_without_reason: typing.Set[int],
-    ) -> typing.List[typing.Tuple[int, int, str]]:
-        errors = []
-        if xfail_with_empty_reason or xfail_without_reason:
+    @classmethod
+    def parse_options(cls, options: str) -> None:
+        cls.options = options
 
-            for line in xfail_with_empty_reason:
-                errors.append((
-                    line,
-                    0,
-                    'FP001 xfailed test with empty reason',
-                ))
-            for line in xfail_without_reason:
-                errors.append((
-                    line,
-                    0,
-                    'FP002 xfailed test without reason',
-                ))
-        return errors
+    def run(self) -> CheckResult:
+        for watcher_class in self._watchers:
+            watcher = watcher_class(self.options, self.filename, self.tree)
+
+            watcher.run()
+
+            yield from (  # type: ignore
+                (*error, type(self))
+                for error in watcher.errors
+            )
