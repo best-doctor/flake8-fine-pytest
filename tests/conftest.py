@@ -20,7 +20,7 @@ def run_validator_for_test_files():
     def _run(filename, allowed_test_directories=None):
         test_file_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
-            'fixture_files',
+            'test_files',
             filename,
         )
 

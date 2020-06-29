@@ -11,6 +11,9 @@ def get_stem(filepath: Union[str, pathlib.Path]) -> str:
 def get_file_directory(filepath: str) -> str:
     directory = pathlib.Path(filepath).parent
 
+    while directory.parent.stem.startswith('test_'):
+        directory = directory.parent
+
     return get_stem(directory)
 
 
