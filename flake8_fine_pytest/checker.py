@@ -5,6 +5,7 @@ from flake8.options.manager import OptionManager
 from flake8_fine_pytest import __version__ as version
 from flake8_fine_pytest.watchers.modules_structure import ModulesStructureWatcher
 from flake8_fine_pytest.watchers.xfail_decorator import XfailWatcher
+from flake8_fine_pytest.watchers.signature_complexity import SignatureComplexityWatcher
 from flake8_fine_pytest.common_types import CheckResult
 
 
@@ -16,6 +17,7 @@ class FinePytestChecker:
     _watchers = (
         XfailWatcher,
         ModulesStructureWatcher,
+        SignatureComplexityWatcher,
     )
 
     def __init__(self, tree: ast.AST, filename: str):
@@ -29,6 +31,11 @@ class FinePytestChecker:
             comma_separated_list=True,
             parse_from_config=True,
             help='Comma-separated list of allowed test directories',
+        )
+        parser.add_option(
+            '--allowed-test-arguments-count',
+            parse_from_config=True,
+            help='Allowed arguments in test signature',
         )
 
     @classmethod
