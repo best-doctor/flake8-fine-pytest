@@ -1,11 +1,8 @@
 import pathlib
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from flake8_fine_pytest.watchers.base import BaseWatcher
-
-
-def get_stem(filepath: Union[str, pathlib.Path]) -> str:
-    return pathlib.PurePath(filepath).stem
+from flake8_fine_pytest.utils import get_stem
 
 
 def get_file_directory(filepath: str) -> str:
@@ -15,10 +12,6 @@ def get_file_directory(filepath: str) -> str:
         directory = directory.parent
 
     return get_stem(directory)
-
-
-def is_test_file(filename: str) -> bool:
-    return filename.startswith('test_')
 
 
 def get_allowed_directories_display(allowed_test_directories: List[str]) -> str:
@@ -51,6 +44,4 @@ class ModulesStructureWatcher(BaseWatcher):
             self.add_error((0, 0, error_message))
 
     def _should_check(self, allowed_test_directories: Optional[List[str]]) -> bool:
-        stem = get_stem(self.filename)
-
-        return is_test_file(stem) and allowed_test_directories is not None
+        return self._is_test_file(self.filename) and allowed_test_directories is not None
