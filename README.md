@@ -33,6 +33,34 @@ tests/test_models.py:0:1: FP003 File tests/test_models.py is in the wrong direct
 Allowed directories: test_unit,test_integration,test_api,test_migration
 ```
 
+3) validates that test function has a not too complicated signature. Allowed number
+of arguments for test can be configured in `setup.cfg` file:
+
+  ```cfg
+  allowed_test_arguments_count = 6
+  ```
+
+If test function has too complex signature, it will raise an error:
+
+```shell
+tests/test_integration/test_models.py:64:1: FP004 test_save_method has too complex
+signature. Allowed count of arguments is 6
+```
+
+4) validates that test function has a not too complicated assertion block.
+Allowed number of asserts for test can be configured in `setup.cfg` file:
+
+  ```cfg
+  allowed_assert_count = 6
+  ```
+
+If test function has too complex assertion block, it will raise an error:
+
+```shell
+tests/test_integration/test_models.py:64:1: FP005 test_save_method has
+too many assert statements. Allowed count of asserts is 6
+```
+
 ## Installation
 
 ```terminal
