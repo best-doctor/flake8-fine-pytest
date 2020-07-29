@@ -10,11 +10,11 @@ class LongDataDefinitionWathcer(BaseWatcher):
 
     def run(self) -> None:
         max_data_lenght = self.options.max_number_line_data_definition
-        longdata = 0
+        data_lenght = 0
         for node in ast.walk(self.tree):
-            if isinstance(node, ast.Assign):
-                longdata += node.end_lineno - node.lineno
-        if longdata > max_data_lenght:
+            if isinstance(node, ast.Assign) and isinstance(node.end_lineno, int):
+                data_lenght += node.end_lineno - node.lineno
+        if data_lenght > max_data_lenght:
             self.add_error((0,
                             0,
                             self.error_template.format(filename=self.filename, max_data_lenght=max_data_lenght)))

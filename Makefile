@@ -1,6 +1,6 @@
 style:
 	flake8 .
-	mdl README.md
+	#mdl README.md
 
 security:
 	safety check -r requirements.txt
