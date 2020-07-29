@@ -62,10 +62,10 @@ $ flake8 test.py
 test.py:1:1: FP001 xfailed test with empty reason
 test.py:5:1: FP002 xfailed test without reason
 ```
-  
+
 ## Code prerequisites
 
-1. Python 3.8+
+1. Python 3.8+.
 
 ## Contributing
 
