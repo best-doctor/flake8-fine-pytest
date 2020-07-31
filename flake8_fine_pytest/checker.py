@@ -7,6 +7,7 @@ from flake8_fine_pytest.watchers.modules_structure import ModulesStructureWatche
 from flake8_fine_pytest.watchers.xfail_decorator import XfailWatcher
 from flake8_fine_pytest.watchers.signature_complexity import SignatureComplexityWatcher
 from flake8_fine_pytest.watchers.assert_count import AssertCountWatcher
+from flake8_fine_pytest.watchers.data_definition import LongDataDefinitionWathcer
 from flake8_fine_pytest.common_types import CheckResult
 
 
@@ -20,6 +21,7 @@ class FinePytestChecker:
         ModulesStructureWatcher,
         SignatureComplexityWatcher,
         AssertCountWatcher,
+        LongDataDefinitionWathcer,
     )
 
     def __init__(self, tree: ast.AST, filename: str):
@@ -45,6 +47,13 @@ class FinePytestChecker:
             type=int,
             parse_from_config=True,
             help='Allowed assert statement count in test',
+        )
+        parser.add_option(
+            '--max-number-line-data-definition',
+            type=int,
+            parse_from_config=True,
+            default=5,
+            help='Set maximum number of line in literal definition. Default: 5.',
         )
 
     @classmethod

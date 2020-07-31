@@ -61,6 +61,8 @@ tests/test_integration/test_models.py:64:1: FP005 test_save_method has
 too many assert statements. Allowed count of asserts is 6
 ```
 
+5) validates that test function has not data definitions longer than 5 strings.
+
 ## Installation
 
 ```terminal
@@ -90,6 +92,10 @@ $ flake8 test.py
 test.py:1:1: FP001 xfailed test with empty reason
 test.py:5:1: FP002 xfailed test without reason
 ```
+
+## Code prerequisites
+
+1. Python 3.8+.
 
 ## Contributing
 
