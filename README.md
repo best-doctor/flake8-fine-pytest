@@ -61,6 +61,34 @@ tests/test_integration/test_models.py:64:1: FP005 test_save_method has
 too many assert statements. Allowed count of asserts is 6
 ```
 
+5) validates that `xfail` decorator has until argument.
+Until argument must be specified as a valid `datetime.date` value
+and not older than the current date. For example:
+
+`@pytest.mark.xfail(reason='Test', until=date(2020, 9, 7))`
+
+If `xfail` does not have such mark, flake8 will raise an error:
+
+```shell
+tests/test_unit/test_utils.py:128:1: FP006 xfail mark has wrong format.
+It should has `until` argument
+```
+
+in case you forgot to specify `until` argument
+
+```shell
+tests/test_unit/test_utils.py:128:1: FP007 xfail mark has wrong format.
+It should has `until` argument with datetime.date type
+```
+
+in case you specified it in wrong format
+
+```shell
+tests/test_unit/test_utils.py:128:1: FP008 stale xfail mark
+```
+
+in case you have too old `xfail` mark
+
 ## Installation
 
 ```terminal
