@@ -2,6 +2,20 @@ import ast
 import typing
 
 
+def _get_reason_value_with_backward_compatibility(keyword: ast.keyword) -> str:
+    """
+    Parses reason value constants.
+
+    We need this because of ast.Str deprecation from python3.8
+    https://greentreesnakes.readthedocs.io/en/latest/nodes.html#Str
+    """
+    if isinstance(keyword.value, ast.Constant):
+        return keyword.value.value
+
+    if isinstance(keyword.value, ast.Str):
+        return keyword.value.s
+
+
 def get_xfail_line_numbers(ast_tree: ast.AST) -> typing.Set[int]:
     xfail_without_reason: typing.Set[int] = set()
     for decorator in ast.walk(ast_tree):
@@ -13,8 +27,8 @@ def get_xfail_line_numbers(ast_tree: ast.AST) -> typing.Set[int]:
 def get_xfail_reason_value(node: ast.AST, xfail_lines: typing.Set[int]) -> str:
     if isinstance(node, ast.Call) and node.lineno in xfail_lines:
         for keyword in node.keywords:
-            if keyword.arg == 'reason' and hasattr(keyword.value, 'value'):
-                return keyword.value.value  # type: ignore
+            if keyword.arg == 'reason':
+                return _get_reason_value_with_backward_compatibility(keyword)
     return 'Wrong ast instance'
 
 
