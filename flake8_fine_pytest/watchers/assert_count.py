@@ -20,14 +20,11 @@ class AssertCountWatcher(BaseWatcher):
 
     def _validate_assert_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
-            if self._is_properly_node(node) is False:
+            if self._is_test(node) is False:
                 continue
 
             if self._is_valid(node) is False:  # type: ignore
                 self._note_an_error(node)
-
-    def _is_properly_node(self, node: ast.AST) -> bool:
-        return isinstance(node, ast.FunctionDef) and node.name.startswith('test_')
 
     def _is_valid(self, node: ast.FunctionDef) -> bool:
         asserts_count = self._get_actual_asserts_count(node)

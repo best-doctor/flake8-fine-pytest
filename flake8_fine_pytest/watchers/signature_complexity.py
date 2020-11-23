@@ -20,14 +20,11 @@ class SignatureComplexityWatcher(BaseWatcher):
 
     def _validate_signature_arguments_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
-            if self._is_properly_node(node) is False:
+            if self._is_test(node) is False:
                 continue
 
             if self._is_invalid_signature(node) is True:  # type: ignore
                 self._note_an_error(node)
-
-    def _is_properly_node(self, node: ast.AST) -> bool:
-        return isinstance(node, ast.FunctionDef) and node.name.startswith('test_')
 
     def _is_invalid_signature(self, ast_node: ast.FunctionDef) -> bool:
         signature_arguments = ast_node.args.args

@@ -16,7 +16,6 @@ def three():
     pass
 
 
-
 def test_with_too_complex_signature(one, two, three):
     assert (2 + 2) == 4
 

@@ -24,3 +24,6 @@ class BaseWatcher:
     def _is_test_file(self, filename: str) -> bool:
         stem = get_stem(self.filename)
         return stem.startswith('test_')
+
+    def _is_test(self, node: ast.AST) -> bool:
+        return isinstance(node, ast.FunctionDef) and node.name.startswith('test_')

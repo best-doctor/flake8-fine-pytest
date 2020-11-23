@@ -10,6 +10,7 @@ from flake8_fine_pytest.watchers.xfail_until_argument_watcher import (
 )
 from flake8_fine_pytest.watchers.signature_complexity import SignatureComplexityWatcher
 from flake8_fine_pytest.watchers.assert_count import AssertCountWatcher
+from flake8_fine_pytest.watchers.usefixtures import UsefixturesWatcher
 from flake8_fine_pytest.common_types import CheckResult
 
 
@@ -24,6 +25,7 @@ class FinePytestChecker:
         SignatureComplexityWatcher,
         AssertCountWatcher,
         XfailUntilArgumentWatcher,
+        UsefixturesWatcher,
     )
 
     def __init__(self, tree: ast.AST, filename: str):
