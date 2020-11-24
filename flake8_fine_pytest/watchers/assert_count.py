@@ -12,15 +12,15 @@ class AssertCountWatcher(BaseWatcher):
     def run(self) -> None:
         self.allowed_assert_count = self.options.allowed_assert_count
 
-        if self._should_check():
+        if self._should_run():
             self._validate_assert_count(self.tree)
 
-    def _should_check(self) -> bool:
-        return self._is_test_file(self.filename) and self.allowed_assert_count is not None
+    def _should_run(self) -> bool:
+        return super()._should_run() and self.allowed_assert_count is not None
 
     def _validate_assert_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
-            if self._is_test(node) is False:
+            if self._should_check_node(node) is False:
                 continue
 
             if self._is_valid(node) is False:  # type: ignore

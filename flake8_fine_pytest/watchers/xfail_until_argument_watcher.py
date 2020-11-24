@@ -63,13 +63,10 @@ class XfailUntilArgumentWatcher(BaseWatcher):
     ]
 
     def run(self) -> None:
-        if self._should_check():
+        if self._should_run():
             self._find_decorators_node_to_validate()
 
-    def _should_check(self) -> bool:
-        return self._is_test_file(self.filename)
-
-    def _is_xfail_call(self, decorator: ast.Call) -> bool:
+    def _should_check_node(self, decorator: ast.Call) -> bool:  # type: ignore
         return (
             hasattr(decorator, 'func')
             and hasattr(decorator.func, 'attr')
@@ -85,10 +82,8 @@ class XfailUntilArgumentWatcher(BaseWatcher):
 
     def _validate_decorators(self, decorators: List[ast.Call]) -> None:
         for decorator in decorators:
-            if self._is_xfail_call(decorator) is False:
-                continue
-
-            self._validate_xfail_decorator_args(decorator)
+            if self._should_check_node(decorator):
+                self._validate_xfail_decorator_args(decorator)
 
     def _validate_xfail_decorator_args(self, decorator: ast.Call) -> None:
         xfail_args = [

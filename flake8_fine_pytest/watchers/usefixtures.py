@@ -11,12 +11,12 @@ class UsefixturesWatcher(BaseWatcher):
     )
 
     def run(self) -> None:
-        if self._is_test_file(self.filename):
+        if self._should_run():
             self._validate_usefixtures_used_where_possible(self.tree)
 
     def _validate_usefixtures_used_where_possible(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
-            if not self._is_test(node):
+            if not self._should_check_node(node):
                 continue
 
             fixture_names = self._get_unreferenced_fixture_names(node)  # type: ignore

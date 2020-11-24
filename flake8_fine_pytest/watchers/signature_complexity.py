@@ -12,15 +12,15 @@ class SignatureComplexityWatcher(BaseWatcher):
     def run(self) -> None:
         self.allowed_test_arguments_count = self.options.allowed_test_arguments_count
 
-        if self._should_check():
+        if self._should_run():
             self._validate_signature_arguments_count(self.tree)
 
-    def _should_check(self) -> bool:
-        return self._is_test_file(self.filename) and self.allowed_test_arguments_count is not None
+    def _should_run(self) -> bool:
+        return super()._should_run() and self.allowed_test_arguments_count is not None
 
     def _validate_signature_arguments_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
-            if self._is_test(node) is False:
+            if self._should_check_node(node) is False:
                 continue
 
             if self._is_invalid_signature(node) is True:  # type: ignore
