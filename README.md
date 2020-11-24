@@ -89,6 +89,24 @@ tests/test_unit/test_utils.py:128:1: FP008 stale xfail mark
 
 in case you have too old `xfail` mark
 
+6) validates that test function uses `pytest.mark.usefixtures`
+for those fixtures, which are not directly referenced in test body
+
+For example, checking this function
+
+```python3
+# file: test_something.py
+def test_something(fixture_one, fixture_two):
+    assert fixture_two.some_attribute is not None
+```
+
+would raise:
+
+```shell
+tests/test_unit/test_something.py:2:0: FP009 test_something should use fixtures
+as follows: @pytest.mark.usefixtures('fixture_one')
+```
+
 ## Installation
 
 ```terminal
