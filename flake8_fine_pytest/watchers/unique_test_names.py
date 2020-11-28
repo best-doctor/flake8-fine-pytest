@@ -9,7 +9,6 @@ class UniqueTestNamesWatcher(BaseWatcher):
 
     def run(self) -> None:
         testcases_names: Set[str] = set()
-        duplicates: Set[str] = set()
 
         if not self._is_test_file(self.filename):
             return
@@ -24,10 +23,6 @@ class UniqueTestNamesWatcher(BaseWatcher):
                 testcases_names.add(node_name)
                 continue
 
-            if node_name in duplicates:
-                continue
-
-            duplicates.add(node_name)
             error_msg = self.error_template.format(node_name)
             self.add_error((node.lineno, 0, error_msg))
 
