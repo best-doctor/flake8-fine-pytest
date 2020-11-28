@@ -14,7 +14,7 @@ class UniqueTestNamesWatcher(BaseWatcher):
             return
 
         for node in ast.walk(self.tree):
-            if not self._is_properly_node(node):
+            if not self._is_test_function(node):
                 continue
 
             node_name = node.name  # type: ignore
@@ -25,6 +25,3 @@ class UniqueTestNamesWatcher(BaseWatcher):
 
             error_msg = self.error_template.format(node_name)
             self.add_error((node.lineno, 0, error_msg))
-
-    def _is_properly_node(self, node: ast.AST) -> bool:
-        return isinstance(node, ast.FunctionDef) and node.name.startswith('test_')
