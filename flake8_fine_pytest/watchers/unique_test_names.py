@@ -14,7 +14,7 @@ class UniqueTestNamesWatcher(BaseWatcher):
             return
 
         for node in ast.walk(self.tree):
-            if not self._is_test_function(node):
+            if not self._should_check_node(node):
                 continue
 
             node_name = node.name  # type: ignore
