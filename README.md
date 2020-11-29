@@ -107,6 +107,8 @@ tests/test_unit/test_something.py:2:0: FP009 test_something should use fixtures
 as follows: @pytest.mark.usefixtures('fixture_one')
 ```
 
+7) validates that test function uses unique names
+
 ## Installation
 
 ```terminal
