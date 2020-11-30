@@ -8,3 +8,14 @@ def test_fixtures_should_be_in_usefixtures(run_validator_for_test_files):
 
     assert len(errors) == 1
     assert errors[0][2] == expected_error_message
+
+
+def test_fixtures_should_be_in_usefixtures_but_validator_is_disabled(
+    run_validator_for_test_files,
+):
+    errors = run_validator_for_test_files(
+        'test_with_fixtures.py',
+        force_usefixtures=False,
+    )
+
+    assert not errors

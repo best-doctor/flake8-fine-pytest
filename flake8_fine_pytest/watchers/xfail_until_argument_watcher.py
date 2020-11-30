@@ -66,6 +66,9 @@ class XfailUntilArgumentWatcher(BaseWatcher):
         if self._should_run():
             self._find_decorators_node_to_validate()
 
+    def _should_run(self) -> bool:
+        return self.options.xfail_check_until and super()._should_run()
+
     def _should_check_node(self, decorator: ast.Call) -> bool:  # type: ignore
         return (
             hasattr(decorator, 'func')

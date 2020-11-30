@@ -52,6 +52,24 @@ class FinePytestChecker:
             parse_from_config=True,
             help='Allowed assert statement count in test',
         )
+        parser.add_option(
+            '--xfail-check-until',
+            action='store_true',
+            parse_from_config=True,
+            help='Check that xfail has until parameter',
+        )
+        parser.add_option(
+            '--xfail-check-reason',
+            action='store_true',
+            parse_from_config=True,
+            help='Check that xfail has reason parameter',
+        )
+        parser.add_option(
+            '--force-usefixtures',
+            action='store_true',
+            parse_from_config=True,
+            help='Enforce usefixtures validator',
+        )
 
     @classmethod
     def parse_options(cls, options: str) -> None:

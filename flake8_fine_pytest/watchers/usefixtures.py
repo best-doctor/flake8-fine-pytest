@@ -14,6 +14,9 @@ class UsefixturesWatcher(BaseWatcher):
         if self._should_run():
             self._validate_usefixtures_used_where_possible(self.tree)
 
+    def _should_run(self) -> bool:
+        return self.options.force_usefixtures and super()._should_run()
+
     def _validate_usefixtures_used_where_possible(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
             if not self._should_check_node(node):

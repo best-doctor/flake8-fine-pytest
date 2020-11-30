@@ -6,11 +6,17 @@ from flake8_fine_pytest.ast_helpers import get_wrong_xfail_decorator_lines
 
 class XfailWatcher(BaseWatcher):
     def run(self) -> None:
+        if not self._should_run():
+            return
+
         xfail_with_empty_reason, xfail_without_reason = get_wrong_xfail_decorator_lines(self.tree)
 
         if xfail_with_empty_reason or xfail_without_reason:
             self._collect_absent_reason_errors(xfail_without_reason)
             self._collect_empty_reason_errors(xfail_with_empty_reason)
+
+    def _should_run(self) -> bool:
+        return self.options.xfail_check_reason
 
     def _collect_empty_reason_errors(self, xfail_with_empty_reason: Set) -> None:
         for line in xfail_with_empty_reason:
