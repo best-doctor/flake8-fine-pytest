@@ -4,6 +4,7 @@ from flake8.options.manager import OptionManager
 
 from flake8_fine_pytest import __version__ as version
 from flake8_fine_pytest.watchers.modules_structure import ModulesStructureWatcher
+from flake8_fine_pytest.watchers.unique_test_names import UniqueTestNamesWatcher
 from flake8_fine_pytest.watchers.xfail_decorator import XfailWatcher
 from flake8_fine_pytest.watchers.xfail_until_argument_watcher import (
     XfailUntilArgumentWatcher,
@@ -26,6 +27,7 @@ class FinePytestChecker:
         AssertCountWatcher,
         XfailUntilArgumentWatcher,
         UsefixturesWatcher,
+        UniqueTestNamesWatcher,
     )
 
     def __init__(self, tree: ast.AST, filename: str):
