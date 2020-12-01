@@ -10,18 +10,10 @@ def test_fixtures_should_be_in_usefixtures(run_validator_for_test_files):
     assert errors[0][2] == expected_error_message
 
 
-def test_testclass_self_or_cls_not_included_into_fixtures_list(
-    run_validator_for_test_files,
-):
-    expected_error_message = (
-        'FP009 test_one should use '
-        "fixtures as follows: @pytest.mark.usefixtures('capsys')"
-    )
-
+def test_testclass_ignored(run_validator_for_test_files):
     errors = run_validator_for_test_files('test_class_with_fixtures.py')
 
-    assert len(errors) == 1
-    assert errors[0][2] == expected_error_message
+    assert not errors
 
 
 def test_fixtures_should_be_in_usefixtures_but_validator_is_disabled(

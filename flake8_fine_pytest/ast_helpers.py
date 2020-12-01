@@ -53,16 +53,3 @@ def get_wrong_xfail_decorator_lines(ast_tree: ast.AST) -> typing.Tuple[typing.Se
             xfail_with_empty_reason.add(line)
 
     return xfail_with_empty_reason, xfail_without_reason
-
-
-def is_static_method(node: ast.FunctionDef) -> bool:
-    for decorator in node.decorator_list:
-        if isinstance(decorator, ast.Name) and decorator.id == 'staticmethod':
-            return True
-
-
-def is_test_class(node: ast.AST) -> bool:
-    return (
-        isinstance(node, ast.ClassDef)
-        and node.name.startswith(('Test', 'test'))
-    )
