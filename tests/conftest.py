@@ -15,6 +15,7 @@ def parse_options(**config):
     options.allowed_assert_count = config.get('allowed_assert_count', None)
     options.xfail_check_until = config.get('xfail_check_until', False)
     options.xfail_check_reason = config.get('xfail_check_reason', False)
+    options.force_unique_test_names = config.get('force_unique_test_names', False)
     options.force_usefixtures = config.get('force_usefixtures', False)
 
     FinePytestChecker.parse_options(options)

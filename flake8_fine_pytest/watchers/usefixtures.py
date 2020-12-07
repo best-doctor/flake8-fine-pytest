@@ -13,7 +13,7 @@ def is_static_method(node: ast.FunctionDef) -> bool:
 class UsefixturesWatcher(BaseWatcher):
     config_option = 'force_usefixtures'
     error_template = (
-        'FP009 {test_name} should use fixtures as follows: '
+        'FP010 {test_name} should use fixtures as follows: '
         '@pytest.mark.usefixtures({fixtures_list_as_str})'
     )
 

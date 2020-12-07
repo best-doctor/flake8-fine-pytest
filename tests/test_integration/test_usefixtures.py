@@ -1,6 +1,6 @@
 def test_fixtures_should_be_in_usefixtures(run_validator_for_test_files):
     expected_error_message = (
-        'FP009 test_with_no_usefixtures_where_needed should use '
+        'FP010 test_with_no_usefixtures_where_needed should use '
         "fixtures as follows: @pytest.mark.usefixtures('caplog', 'tmp_path')"
     )
 

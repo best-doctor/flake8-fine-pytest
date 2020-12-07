@@ -67,6 +67,12 @@ class FinePytestChecker:
             help='Check that xfail has reason parameter',
         )
         parser.add_option(
+            '--force-unique-test-names',
+            action='store_true',
+            parse_from_config=True,
+            help='Enforce unqiue test names',
+        )
+        parser.add_option(
             '--force-usefixtures',
             action='store_true',
             parse_from_config=True,

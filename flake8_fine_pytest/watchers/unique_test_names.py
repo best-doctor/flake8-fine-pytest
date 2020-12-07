@@ -5,13 +5,11 @@ from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
 class UniqueTestNamesWatcher(BaseWatcher):
+    config_option = 'force_unique_test_names'
     error_template = 'FP009 Duplicate name test case ({})'
 
     def run(self) -> None:
         testcases_names: Set[str] = set()
-
-        if not self._is_test_file(self.filename):
-            return
 
         for node in ast.walk(self.tree):
             if not self._should_check_node(node):
