@@ -13,9 +13,9 @@ def parse_options(**config):
     options.allowed_test_directories = config.get('allowed_test_directories', None)
     options.allowed_test_arguments_count = config.get('allowed_test_arguments_count', None)
     options.allowed_assert_count = config.get('allowed_assert_count', None)
-    options.xfail_check_until = config.get('xfail_check_until', True)
-    options.xfail_check_reason = config.get('xfail_check_reason', True)
-    options.force_usefixtures = config.get('force_usefixtures', True)
+    options.xfail_check_until = config.get('xfail_check_until', False)
+    options.xfail_check_reason = config.get('xfail_check_reason', False)
+    options.force_usefixtures = config.get('force_usefixtures', False)
 
     FinePytestChecker.parse_options(options)
 

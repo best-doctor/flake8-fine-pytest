@@ -11,20 +11,14 @@ def is_static_method(node: ast.FunctionDef) -> bool:
 
 
 class UsefixturesWatcher(BaseWatcher):
+    config_option = 'force_usefixtures'
     error_template = (
         'FP009 {test_name} should use fixtures as follows: '
         '@pytest.mark.usefixtures({fixtures_list_as_str})'
     )
 
     def run(self) -> None:
-        if self._should_run():
-            self._validate_usefixtures_used_where_possible(self.tree)
-
-    def _should_run(self) -> bool:
-        return self.options.force_usefixtures and super()._should_run()
-
-    def _validate_usefixtures_used_where_possible(self, tree: ast.AST) -> None:
-        for test_node, is_class_member in self._iterate_over_test_function_definitions(tree):
+        for test_node, is_class_member in self._iterate_over_test_function_definitions(self.tree):
             fixture_names = self._get_unreferenced_fixture_names(
                 test_node, is_class_member,
             )

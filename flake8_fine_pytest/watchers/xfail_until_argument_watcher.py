@@ -53,6 +53,7 @@ class XfailUntilArgumentFreshEnoughValidator:
 
 
 class XfailUntilArgumentWatcher(BaseWatcher):
+    config_option = 'xfail_check_until'
     error_template = (
         'FP006 xfail mark has wrong format. It should has `until` argument'
     )
@@ -63,11 +64,10 @@ class XfailUntilArgumentWatcher(BaseWatcher):
     ]
 
     def run(self) -> None:
-        if self._should_run():
-            self._find_decorators_node_to_validate()
-
-    def _should_run(self) -> bool:
-        return self.options.xfail_check_until and super()._should_run()
+        for node in ast.walk(self.tree):
+            if isinstance(node, ast.FunctionDef):
+                decorators = node.decorator_list
+                self._validate_decorators(decorators)  # type: ignore
 
     def _should_check_node(self, decorator: ast.Call) -> bool:  # type: ignore
         return (
@@ -75,13 +75,6 @@ class XfailUntilArgumentWatcher(BaseWatcher):
             and hasattr(decorator.func, 'attr')
             and decorator.func.attr == 'xfail'  # type: ignore
         )
-
-    def _find_decorators_node_to_validate(self) -> None:
-        for node in ast.walk(self.tree):
-            if isinstance(node, ast.FunctionDef):
-                decorators = node.decorator_list
-
-                self._validate_decorators(decorators)  # type: ignore
 
     def _validate_decorators(self, decorators: List[ast.Call]) -> None:
         for decorator in decorators:
@@ -100,7 +93,9 @@ class XfailUntilArgumentWatcher(BaseWatcher):
             if keyword.arg == self.required_xfail_until_argument_name:
                 return self._validate_xfail_decorator_until_argument(decorator, keyword)
 
-    def _validate_xfail_decorator_until_argument(self, decorator: ast.Call, until_keyword: ast.keyword) -> None:
+    def _validate_xfail_decorator_until_argument(
+        self, decorator: ast.Call, until_keyword: ast.keyword,
+    ) -> None:
         for validator in self.validators:
             error = validator.validate(until_keyword)  # type: ignore
 

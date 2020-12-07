@@ -79,7 +79,8 @@ class FinePytestChecker:
         for watcher_class in self._watchers:
             watcher = watcher_class(self.options, self.filename, self.tree)
 
-            watcher.run()
+            if watcher.should_run():
+                watcher.run()
 
             yield from (  # type: ignore
                 (*error, type(self))

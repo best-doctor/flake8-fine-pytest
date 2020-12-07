@@ -1,5 +1,8 @@
 def test_xfail_mark_absent(run_validator_for_test_files):
-    errors = run_validator_for_test_files('test_absent_xfail_until_mark.py')
+    errors = run_validator_for_test_files(
+        'test_absent_xfail_until_mark.py',
+        xfail_check_until=True,
+    )
 
     lineno, _, error_message, _ = errors[0]
 
@@ -9,7 +12,10 @@ def test_xfail_mark_absent(run_validator_for_test_files):
 
 
 def test_xfail_until_mark_has_wrong_format(run_validator_for_test_files):
-    errors = run_validator_for_test_files('test_xfail_until_wrong_format.py')
+    errors = run_validator_for_test_files(
+        'test_xfail_until_wrong_format.py',
+        xfail_check_until=True,
+    )
 
     lineno, _, error_message, _ = errors[0]
 
@@ -19,7 +25,10 @@ def test_xfail_until_mark_has_wrong_format(run_validator_for_test_files):
 
 
 def test_xfail_mark_has_stale_until_arg(run_validator_for_test_files):
-    errors = run_validator_for_test_files('test_stale_xfail.py')
+    errors = run_validator_for_test_files(
+        'test_stale_xfail.py',
+        xfail_check_until=True,
+    )
 
     lineno, _, error_message, _ = errors[0]
 

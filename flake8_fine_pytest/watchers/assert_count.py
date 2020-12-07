@@ -4,6 +4,7 @@ from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
 class AssertCountWatcher(BaseWatcher):
+    config_option = 'allowed_assert_count'
     error_template = (
         'FP005 {test_name} has too many assert statements. '
         'Allowed count of asserts is {allowed_assert_count}'
@@ -11,12 +12,7 @@ class AssertCountWatcher(BaseWatcher):
 
     def run(self) -> None:
         self.allowed_assert_count = self.options.allowed_assert_count
-
-        if self._should_run():
-            self._validate_assert_count(self.tree)
-
-    def _should_run(self) -> bool:
-        return super()._should_run() and self.allowed_assert_count is not None
+        self._validate_assert_count(self.tree)
 
     def _validate_assert_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):
