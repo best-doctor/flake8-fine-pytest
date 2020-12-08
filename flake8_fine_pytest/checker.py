@@ -57,12 +57,14 @@ class FinePytestChecker:
         parser.add_option(
             '--xfail-check-until',
             action='store_true',
+            default=True,
             parse_from_config=True,
             help='Check that xfail has until parameter',
         )
         parser.add_option(
             '--xfail-check-reason',
             action='store_true',
+            default=True,
             parse_from_config=True,
             help='Check that xfail has reason parameter',
         )
