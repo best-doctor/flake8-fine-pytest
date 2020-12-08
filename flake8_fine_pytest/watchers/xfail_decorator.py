@@ -5,6 +5,8 @@ from flake8_fine_pytest.ast_helpers import get_wrong_xfail_decorator_lines
 
 
 class XfailWatcher(BaseWatcher):
+    config_option = 'xfail_check_reason'
+
     def run(self) -> None:
         xfail_with_empty_reason, xfail_without_reason = get_wrong_xfail_decorator_lines(self.tree)
 

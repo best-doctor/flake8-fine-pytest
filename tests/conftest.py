@@ -7,19 +7,23 @@ from flake8.options.manager import OptionManager
 from flake8_fine_pytest.checker import FinePytestChecker
 
 
-def parse_options(allowed_test_directories, allowed_test_arguments_count, allowed_assert_count):
+def parse_options(**config):
     options = OptionManager()
 
-    options.allowed_test_directories = allowed_test_directories
-    options.allowed_test_arguments_count = allowed_test_arguments_count
-    options.allowed_assert_count = allowed_assert_count
+    options.allowed_test_directories = config.get('allowed_test_directories', None)
+    options.allowed_test_arguments_count = config.get('allowed_test_arguments_count', None)
+    options.allowed_assert_count = config.get('allowed_assert_count', None)
+    options.xfail_check_until = config.get('xfail_check_until', False)
+    options.xfail_check_reason = config.get('xfail_check_reason', False)
+    options.force_unique_test_names = config.get('force_unique_test_names', False)
+    options.force_usefixtures = config.get('force_usefixtures', False)
 
     FinePytestChecker.parse_options(options)
 
 
 @pytest.fixture
 def run_validator_for_test_files():
-    def _run(filename, allowed_test_directories=None, allowed_test_arguments_count=None, allowed_assert_count=None):
+    def _run(filename, **config_options):
         test_file_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             'test_files',
@@ -32,7 +36,7 @@ def run_validator_for_test_files():
         tree = ast.parse(raw_content)
         checker = FinePytestChecker(tree=tree, filename=test_file_path)
 
-        parse_options(allowed_test_directories, allowed_test_arguments_count, allowed_assert_count)
+        parse_options(**config_options)
 
         return list(checker.run())
 

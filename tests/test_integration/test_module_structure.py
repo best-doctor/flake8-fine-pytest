@@ -8,6 +8,9 @@ import pytest
     [None, 'test_modules_structures.py', 0],
 ])
 def test_wrong_module_directory(allowed_directory, test_filepath, expected_errors, run_validator_for_test_files):
-    errors = run_validator_for_test_files(test_filepath, allowed_directory)
+    errors = run_validator_for_test_files(
+        test_filepath,
+        allowed_test_directories=allowed_directory,
+    )
 
     assert len(errors) == expected_errors

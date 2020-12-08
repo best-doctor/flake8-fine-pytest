@@ -4,6 +4,7 @@ from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
 class SignatureComplexityWatcher(BaseWatcher):
+    config_option = 'allowed_test_arguments_count'
     error_template = (
         'FP004 {test_name} has too complex signature. '
         'Allowed count of arguments is {allowed_arguments}'
@@ -11,12 +12,7 @@ class SignatureComplexityWatcher(BaseWatcher):
 
     def run(self) -> None:
         self.allowed_test_arguments_count = self.options.allowed_test_arguments_count
-
-        if self._should_run():
-            self._validate_signature_arguments_count(self.tree)
-
-    def _should_run(self) -> bool:
-        return super()._should_run() and self.allowed_test_arguments_count is not None
+        self._validate_signature_arguments_count(self.tree)
 
     def _validate_signature_arguments_count(self, tree: ast.AST) -> None:
         for node in ast.walk(tree):

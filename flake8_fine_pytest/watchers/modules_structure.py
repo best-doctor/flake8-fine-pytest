@@ -26,6 +26,7 @@ def get_error_message(template: str, allowed_directories: List[str], filepath: s
 
 
 class ModulesStructureWatcher(BaseWatcher):
+    config_option = 'allowed_test_directories'
     error_template = (
         'FP003 File {filepath} is in the wrong directory. Allowed directories: {allowed_directories}'
     )
@@ -33,19 +34,12 @@ class ModulesStructureWatcher(BaseWatcher):
     def run(self) -> None:
         allowed_test_directories = self.options.allowed_test_directories
 
-        if self._should_run():
-            file_directory = get_file_directory(self.filename)
+        file_directory = get_file_directory(self.filename)
 
-            if file_directory not in allowed_test_directories:
-                error_message = get_error_message(
-                    self.error_template,
-                    allowed_test_directories,
-                    self.filename,
-                )
-                self.add_error((0, 0, error_message))
-
-    def _should_run(self) -> bool:
-        return (
-            super()._should_run()
-            and self.options.allowed_test_directories is not None
-        )
+        if file_directory not in allowed_test_directories:
+            error_message = get_error_message(
+                self.error_template,
+                allowed_test_directories,
+                self.filename,
+            )
+            self.add_error((0, 0, error_message))
