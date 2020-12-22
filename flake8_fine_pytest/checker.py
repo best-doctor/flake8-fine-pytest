@@ -40,29 +40,34 @@ class FinePytestChecker:
             '--allowed-test-directories',
             comma_separated_list=True,
             parse_from_config=True,
+            default=['test_unit', 'test_integration'],
             help='Comma-separated list of allowed test directories',
         )
         parser.add_option(
             '--allowed-test-arguments-count',
             type=int,
             parse_from_config=True,
+            default=6,
             help='Allowed arguments in test signature',
         )
         parser.add_option(
             '--allowed-assert-count',
             type=int,
             parse_from_config=True,
+            default=6,
             help='Allowed assert statement count in test',
         )
         parser.add_option(
             '--xfail-check-until',
             action='store_true',
+            default=True,
             parse_from_config=True,
             help='Check that xfail has until parameter',
         )
         parser.add_option(
             '--xfail-check-reason',
             action='store_true',
+            default=True,
             parse_from_config=True,
             help='Check that xfail has reason parameter',
         )
@@ -70,12 +75,14 @@ class FinePytestChecker:
             '--force-unique-test-names',
             action='store_true',
             parse_from_config=True,
+            default=True,
             help='Enforce unqiue test names',
         )
         parser.add_option(
             '--force-usefixtures',
             action='store_true',
             parse_from_config=True,
+            default=True,
             help='Enforce usefixtures validator',
         )
 
