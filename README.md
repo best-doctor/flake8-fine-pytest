@@ -1,6 +1,6 @@
 # flake8-fine-pytest
 
-[![Build Status](https://travis-ci.org/best-doctor/flake8-fine-pytest.svg?branch=master)](https://travis-ci.org/best-doctor/flake8-fine-pytest)
+[![Build Status](https://github.com/best-doctor/flake8-fine-pytest/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/best-doctor/flake8-fine-pytest/actions/workflows/build.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ea5c318a4508b00d7be2/maintainability)](https://codeclimate.com/github/best-doctor/flake8-fine-pytest/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ea5c318a4508b00d7be2/test_coverage)](https://codeclimate.com/github/best-doctor/flake8-fine-pytest/test_coverage)
 [![PyPI version](https://badge.fury.io/py/flake8-fine-pytest.svg)](https://badge.fury.io/py/flake8-fine-pytest)
@@ -22,7 +22,7 @@ and reduces amount of time wasted on fixing xfailed tests.
 in `setup.cfg` file:
 
   ```cfg
-  allowed_test_directories= test_unit,test_integration,test_api
+  allowed_test_directories = test_unit,test_integration,test_api
   ```
 
 If file with prefix `test_` is not in allowed directories list, it will raise
@@ -96,7 +96,7 @@ for those fixtures, which are not directly referenced in test body
 
 For example, checking this function
 
-```python3
+```python
 # file: test_something.py
 def test_something(fixture_one, fixture_two):
     assert fixture_two.some_attribute is not None
@@ -152,7 +152,7 @@ We would love you to contribute to our project. It's simple:
 Here are useful tips:
 
 - You can run all checks and tests with `make check`.
-  Please do it before TravisCI does.
+  Please do it before CI does.
 - We use [BestDoctor python styleguide](https://github.com/best-doctor/guides/blob/master/guides/en/python_styleguide.md).
 - We respect [Django CoC](https://www.djangoproject.com/conduct/).
   Make soft, not bullshit.
