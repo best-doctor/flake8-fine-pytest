@@ -8,7 +8,7 @@ from flake8_fine_pytest.checker import FinePytestChecker
 
 
 def parse_options(**config):
-    options = OptionManager()
+    options = OptionManager('flake8_fine_pytest', '1.0.3')
 
     options.allowed_test_directories = config.get('allowed_test_directories', None)
     options.allowed_test_arguments_count = config.get('allowed_test_arguments_count', None)
