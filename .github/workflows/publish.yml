@@ -6,37 +6,43 @@ on:
       - '*'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.0.1
+      - name: Install uv and set up Python ${{ matrix.python-version }}
+        uses: astral-sh/setup-uv@v10.0.1
         with:
+          python-version: ${{ matrix.python-version }}
           enable-cache: true
+      - name: Install dependencies
+        run: uv sync --frozen
       - name: Run checks
         run: |
-          uv sync --frozen --group dev
           uv run flake8 .
           uv run mypy flake8_fine_pytest
-          uv run pytest
-      - name: Build distributions
-        run: uv build
-      - uses: actions/upload-artifact@v7
-        with:
-          name: dist
-          path: dist/
+          uv run pytest --cov --cov-report=term
 
   publish:
     runs-on: ubuntu-latest
-    needs: build
-    environment: pypi
+    needs: test
+    environment:
+      name: pypi
+      url: https://pypi.org/p/flake8-fine-pytest
     permissions:
       # Required for PyPI trusted publishing; no API token needs to be stored.
       id-token: write
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/checkout@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
         with:
-          name: dist
-          path: dist/
-      - name: Publish to PyPI
+          python-version: '3.10'
+      - name: Build distributions
+        run: uv build
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
