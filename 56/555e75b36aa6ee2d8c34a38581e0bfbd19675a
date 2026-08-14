@@ -1,0 +1,19 @@
+.github/workflows/publish.yml
+  s_c236b7c4744b6a::t_08d411cb46da44 43-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "56555e75b36aa6ee2d8c34a38581e0bfbd19675a",
+  "prompts": {},
+  "sessions": {
+    "s_c236b7c4744b6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c968b2aa-8837-4db1-a5b2-496618decee5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Vladislav Katolyk <v.katolyk@bestdoctor.ru>"
+    }
+  }
+}
