@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - Unreleased
+## [2.0.0] - 2026-08-14
 
 ### Removed
 
@@ -101,5 +101,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release with FP001 and FP002: xfail reason validation.
 
-[2.0.0]: https://github.com/best-doctor/flake8-fine-pytest/compare/v1.0.3...HEAD
+[2.0.0]: https://github.com/best-doctor/flake8-fine-pytest/compare/v1.0.3...v2.0.0
 [1.0.3]: https://github.com/best-doctor/flake8-fine-pytest/releases/tag/v1.0.3
