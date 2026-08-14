@@ -1,23 +1,25 @@
+.PHONY: install style types test coverage readme requirements check
+
+install:
+	uv sync --group dev
+	uv run pre-commit install
+
 style:
-	flake8 .
-
-test:
-	python -m pytest
-
-coverage:
-	python -m pytest --cov=flake8_fine_pytest --cov-report=xml
-
-readme:
-	mdl README.md
+	uv run flake8 .
 
 types:
-	mypy flake8_fine_pytest
+	uv run mypy flake8_fine_pytest
+
+test:
+	uv run pytest
+
+coverage:
+	uv run pytest --cov --cov-report=xml --cov-report=term-missing
+
+readme:
+	uv run pre-commit run markdownlint-cli2 --all-files
 
 requirements:
-	safety check -r requirements_dev.txt
+	uv run pip-audit --skip-editable
 
-check:
-	make style
-	make types
-	make test
-	make requirements
+check: style types test requirements

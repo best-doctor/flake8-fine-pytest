@@ -1,0 +1,55 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: debug-statements
+        # Files under tests/test_files are linter input, not runnable code.
+        exclude: ^tests/test_files/
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.12.4
+    hooks:
+      - id: uv-lock
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+      - id: markdownlint-cli2
+
+  # Run the checks through uv so that hooks and CI share the pinned versions
+  # from uv.lock instead of a second, drifting list of plugins. These rely on
+  # the default `dev` group, which pulls in lint, test and audit tooling.
+  - repo: local
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: uv run --frozen flake8
+        language: system
+        types: [python]
+        # flake8 skips its own `exclude` for explicitly passed filenames.
+        exclude: ^tests/test_files/
+        require_serial: true
+
+      - id: mypy
+        name: mypy
+        entry: uv run --frozen mypy
+        language: system
+        types: [python]
+        exclude: ^tests/
+        require_serial: true
+
+      - id: pytest
+        name: pytest
+        entry: uv run --frozen pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        require_serial: true

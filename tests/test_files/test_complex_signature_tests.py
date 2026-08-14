@@ -25,4 +25,4 @@ def test_with_normal_signature(one):
 
 
 def test_with_empty_signature():
-    assert (2 + 2) == 4 
+    assert (2 + 2) == 4

@@ -1,55 +1,57 @@
 import ast
-import typing
+
+XFAIL_MARK_NAME = 'xfail'
+REASON_ARGUMENT_NAME = 'reason'
 
 
-def _get_reason_value_with_backward_compatibility(keyword: ast.keyword) -> str:
+def is_xfail_mark(node: ast.AST) -> bool:
+    return isinstance(node, ast.Attribute) and node.attr == XFAIL_MARK_NAME
+
+
+def get_reason_keyword(call: ast.Call) -> ast.keyword | None:
+    for keyword in call.keywords:
+        if keyword.arg == REASON_ARGUMENT_NAME:
+            return keyword
+    return None
+
+
+def is_empty_reason(reason: ast.expr) -> bool:
     """
-    Parses reason value constants.
+    Tells whether an xfail reason is provably empty.
 
-    We need this because of ast.Str deprecation from python3.8
-    https://greentreesnakes.readthedocs.io/en/latest/nodes.html#Str
+    Only literals can be judged: a reason built from a variable, a call or an
+    f-string is considered filled in, since its value is unknown until runtime.
     """
-    if isinstance(keyword.value, ast.Constant):
-        return keyword.value.value
-
-    if isinstance(keyword.value, ast.Str):
-        return keyword.value.s
+    return isinstance(reason, ast.Constant) and not reason.value
 
 
-def get_xfail_line_numbers(ast_tree: ast.AST) -> typing.Set[int]:
-    xfail_without_reason: typing.Set[int] = set()
-    for decorator in ast.walk(ast_tree):
-        if isinstance(decorator, (ast.Attribute)) and decorator.attr == 'xfail':
-            xfail_without_reason.add(decorator.lineno)
-    return xfail_without_reason
+def get_wrong_xfail_decorator_lines(ast_tree: ast.AST) -> tuple[set[int], set[int]]:
+    """
+    Collects lines of xfail marks that are not documented well enough.
 
+    Returns lines of marks with an empty reason and lines of marks
+    with no reason argument at all, in that order.
+    """
+    xfail_with_empty_reason: set[int] = set()
+    xfail_without_reason: set[int] = set()
 
-def get_xfail_reason_value(node: ast.AST, xfail_lines: typing.Set[int]) -> str:
-    if isinstance(node, ast.Call) and node.lineno in xfail_lines:
-        for keyword in node.keywords:
-            if keyword.arg == 'reason':
-                return _get_reason_value_with_backward_compatibility(keyword)
-    return 'Wrong ast instance'
+    bare_marks: dict[ast.AST, int] = {}
+    called_marks: set[ast.AST] = set()
 
-
-def get_xfail_reasons(ast_tree: ast.AST) -> typing.Dict:
-    xfail_lines = get_xfail_line_numbers(ast_tree)
-    xfail_reasons: typing.Dict = {}
     for node in ast.walk(ast_tree):
-        reason_value = get_xfail_reason_value(node, xfail_lines)
-        if reason_value != 'Wrong ast instance':
-            xfail_reasons[node.lineno] = get_xfail_reason_value(node, xfail_lines)
-    return xfail_reasons
+        if is_xfail_mark(node):
+            bare_marks[node] = node.lineno  # type: ignore[attr-defined]
+        elif isinstance(node, ast.Call) and is_xfail_mark(node.func):
+            called_marks.add(node.func)
 
+            reason = get_reason_keyword(node)
+            if reason is None:
+                xfail_without_reason.add(node.lineno)
+            elif is_empty_reason(reason.value):
+                xfail_with_empty_reason.add(node.lineno)
 
-def get_wrong_xfail_decorator_lines(ast_tree: ast.AST) -> typing.Tuple[typing.Set[int], typing.Set[int]]:
-    xfail_reasons = get_xfail_reasons(ast_tree)
-    xfail_without_reason = get_xfail_line_numbers(ast_tree)
-    xfail_with_empty_reason: typing.Set[int] = set()
-
-    for line, reason in xfail_reasons.items():
-        xfail_without_reason.remove(line)
-        if not reason:
-            xfail_with_empty_reason.add(line)
+    for mark, lineno in bare_marks.items():
+        if mark not in called_marks:
+            xfail_without_reason.add(lineno)
 
     return xfail_with_empty_reason, xfail_without_reason

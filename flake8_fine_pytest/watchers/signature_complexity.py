@@ -1,5 +1,4 @@
-import ast
-
+from flake8_fine_pytest.common_types import AnyFunctionDef
 from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
@@ -11,29 +10,14 @@ class SignatureComplexityWatcher(BaseWatcher):
     )
 
     def run(self) -> None:
-        self.allowed_test_arguments_count = self.options.allowed_test_arguments_count
-        self._validate_signature_arguments_count(self.tree)
+        allowed_test_arguments_count = self.options.allowed_test_arguments_count
 
-    def _validate_signature_arguments_count(self, tree: ast.AST) -> None:
-        for node in ast.walk(tree):
-            if self._should_check_node(node) is False:
-                continue
+        for node in self._iterate_over_test_functions(self.tree):
+            if len(node.args.args) > allowed_test_arguments_count:
+                self._note_an_error(node, allowed_test_arguments_count)
 
-            if self._is_invalid_signature(node) is True:  # type: ignore
-                self._note_an_error(node)
-
-    def _is_invalid_signature(self, ast_node: ast.FunctionDef) -> bool:
-        signature_arguments = ast_node.args.args
-
-        return len(signature_arguments) > self.allowed_test_arguments_count
-
-    def _note_an_error(self, node: ast.AST) -> None:
-        error_message = self._get_error_message(node)  # type: ignore
-        self.add_error((node.lineno, 0, error_message))
-
-    def _get_error_message(self, node: ast.FunctionDef) -> str:
-        invalid_test_name = node.name
-
-        return self.error_template.format(
-            test_name=invalid_test_name, allowed_arguments=self.allowed_test_arguments_count,
+    def _note_an_error(self, node: AnyFunctionDef, allowed_arguments: int) -> None:
+        error_message = self.error_template.format(
+            test_name=node.name, allowed_arguments=allowed_arguments,
         )
+        self.add_error((node.lineno, 0, error_message))

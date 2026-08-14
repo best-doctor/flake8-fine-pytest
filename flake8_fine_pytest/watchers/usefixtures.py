@@ -1,13 +1,15 @@
 import ast
-import typing
+from collections.abc import Iterator
 
+from flake8_fine_pytest.common_types import AnyFunctionDef
 from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
-def is_static_method(node: ast.FunctionDef) -> bool:
-    for decorator in node.decorator_list:
-        if isinstance(decorator, ast.Name) and decorator.id == 'staticmethod':
-            return True
+def is_static_method(node: AnyFunctionDef) -> bool:
+    return any(
+        isinstance(decorator, ast.Name) and decorator.id == 'staticmethod'
+        for decorator in node.decorator_list
+    )
 
 
 class UsefixturesWatcher(BaseWatcher):
@@ -18,16 +20,12 @@ class UsefixturesWatcher(BaseWatcher):
     )
 
     def run(self) -> None:
-        for test_node, is_class_member in self._iterate_over_test_function_definitions(self.tree):
-            fixture_names = self._get_unreferenced_fixture_names(
-                test_node, is_class_member,
-            )
+        for test_node, is_class_member in self._iterate_over_test_function_definitions():
+            fixture_names = self._get_unreferenced_fixture_names(test_node, is_class_member)
             if fixture_names:
                 self._add_usefixtures_error(test_node, fixture_names)
 
-    def _iterate_over_test_function_definitions(
-        self, tree: ast.AST,
-    ) -> typing.Iterator[typing.Tuple[ast.FunctionDef, bool]]:
+    def _iterate_over_test_function_definitions(self) -> Iterator[tuple[AnyFunctionDef, bool]]:
         """
         Returns any FunctionDef that looks like a test.
 
@@ -36,26 +34,21 @@ class UsefixturesWatcher(BaseWatcher):
         """
         for node in ast.iter_child_nodes(self.tree):
             if self._should_check_node(node):
-                yield node, False  # type: ignore
+                yield node, False  # type: ignore[misc]
 
-            elif(
-                isinstance(node, ast.ClassDef)
-                and node.name.startswith(('Test', 'test'))
-            ):
+            elif isinstance(node, ast.ClassDef) and node.name.startswith(('Test', 'test')):
                 yield from self._iterate_over_test_class_nodes(node)
 
     def _iterate_over_test_class_nodes(
-        self, class_node: ast.AST,
-    ) -> typing.Iterator[typing.Tuple[ast.FunctionDef, bool]]:
+        self, class_node: ast.ClassDef,
+    ) -> Iterator[tuple[AnyFunctionDef, bool]]:
         for node in ast.iter_child_nodes(class_node):
             if self._should_check_node(node):
-                yield node, True  # type: ignore
+                yield node, True  # type: ignore[misc]
 
     def _get_unreferenced_fixture_names(
-        self,
-        function_node: ast.FunctionDef,
-        is_class_method: bool,
-    ) -> typing.List[str]:
+        self, function_node: AnyFunctionDef, is_class_method: bool,
+    ) -> list[str]:
         referenced_variable_names = {
             node.id
             for node in ast.walk(function_node)
@@ -63,21 +56,17 @@ class UsefixturesWatcher(BaseWatcher):
         }
 
         if is_class_method and not is_static_method(function_node):
-            try:
-                # `self` or `cls`, or whatever it happens to be called.
-                referenced_variable_names.add(function_node.args.args[0].arg)
-            except IndexError:
-                # wrong class method definition. Skip silently.
-                pass
+            # `self` or `cls`, or whatever it happens to be called.
+            positional_arguments = function_node.args.args
+            if positional_arguments:
+                referenced_variable_names.add(positional_arguments[0].arg)
 
         test_fixture_names = {arg.arg for arg in function_node.args.args}
 
         return sorted(test_fixture_names - referenced_variable_names)
 
     def _add_usefixtures_error(
-        self,
-        function_node: ast.FunctionDef,
-        fixture_names: typing.List[str],
+        self, function_node: AnyFunctionDef, fixture_names: list[str],
     ) -> None:
         error_message = self.error_template.format(
             test_name=function_node.name,

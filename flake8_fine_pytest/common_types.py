@@ -1,5 +1,11 @@
-import typing
+import argparse
+import ast
+from collections.abc import Generator
 
-ErrorType = typing.Tuple[int, int, str]
+ErrorType = tuple[int, int, str]
 
-CheckResult = typing.Generator[ErrorType, None, None]
+CheckResult = Generator[ErrorType, None, None]
+
+AnyFunctionDef = ast.FunctionDef | ast.AsyncFunctionDef
+
+Options = argparse.Namespace

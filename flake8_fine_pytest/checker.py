@@ -1,24 +1,26 @@
 import ast
+from typing import ClassVar
 
 from flake8.options.manager import OptionManager
 
 from flake8_fine_pytest import __version__ as version
+from flake8_fine_pytest.common_types import CheckResult, Options
+from flake8_fine_pytest.watchers.assert_count import AssertCountWatcher
 from flake8_fine_pytest.watchers.modules_structure import ModulesStructureWatcher
+from flake8_fine_pytest.watchers.signature_complexity import SignatureComplexityWatcher
 from flake8_fine_pytest.watchers.unique_test_names import UniqueTestNamesWatcher
+from flake8_fine_pytest.watchers.usefixtures import UsefixturesWatcher
 from flake8_fine_pytest.watchers.xfail_decorator import XfailWatcher
 from flake8_fine_pytest.watchers.xfail_until_argument_watcher import (
     XfailUntilArgumentWatcher,
 )
-from flake8_fine_pytest.watchers.signature_complexity import SignatureComplexityWatcher
-from flake8_fine_pytest.watchers.assert_count import AssertCountWatcher
-from flake8_fine_pytest.watchers.usefixtures import UsefixturesWatcher
-from flake8_fine_pytest.common_types import CheckResult
 
 
 class FinePytestChecker:
     name = 'flake8-fine-pytest'
     version = version
-    options = None
+    # Set by flake8 through `parse_options` before any checker is instantiated.
+    options: ClassVar[Options]
 
     _watchers = (
         XfailWatcher,
@@ -87,7 +89,7 @@ class FinePytestChecker:
         )
 
     @classmethod
-    def parse_options(cls, options: str) -> None:
+    def parse_options(cls, options: Options) -> None:
         cls.options = options
 
     def run(self) -> CheckResult:
@@ -97,7 +99,7 @@ class FinePytestChecker:
             if watcher.should_run():
                 watcher.run()
 
-            yield from (  # type: ignore
+            yield from (  # type: ignore[misc]
                 (*error, type(self))
                 for error in watcher.errors
             )

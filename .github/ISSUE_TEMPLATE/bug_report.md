@@ -11,28 +11,27 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+The smallest test file that reproduces the problem:
+
+```python
+# test_example.py
+```
+
+The command you ran and its output:
+
+```shell
+flake8 test_example.py
+```
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+Which error codes you expected to be reported, and which ones you actually got.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Environment**
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+- Python version: [e.g. 3.12]
+- flake8 version: [e.g. 7.3.0]
+- flake8-fine-pytest version: [e.g. 2.0.0]
+- Relevant configuration from `pyproject.toml` or `setup.cfg`
 
 **Additional context**
 Add any other context about the problem here.

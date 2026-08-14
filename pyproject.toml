@@ -1,0 +1,136 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "flake8-fine-pytest"
+description = "A flake8 extension that checks test extra style"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "BestDoctor", email = "khkaterine@gmail.com" }]
+keywords = ["flake8", "pytest"]
+dynamic = ["version"]
+classifiers = [
+    "Environment :: Console",
+    "Framework :: Flake8",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = ["flake8>=5"]
+
+[project.urls]
+Homepage = "https://github.com/best-doctor/flake8-fine-pytest"
+Source = "https://github.com/best-doctor/flake8-fine-pytest"
+Changelog = "https://github.com/best-doctor/flake8-fine-pytest/blob/master/CHANGELOG.md"
+
+[project.entry-points."flake8.extension"]
+FP = "flake8_fine_pytest.checker:FinePytestChecker"
+
+[dependency-groups]
+test = [
+    "pytest>=8",
+    "pytest-cov>=6",
+]
+lint = [
+    "flake8>=7.3",
+    "Flake8-pyproject>=1.2.4",
+    "flake8-2020>=1.8.1",
+    "flake8-annotations-complexity>=0.1",
+    "flake8-annotations-coverage>=0.0.6",
+    "flake8-broken-line>=1",
+    "flake8-bugbear>=25",
+    "flake8-builtins>=3",
+    "flake8-class-attributes-order>=0.3",
+    "flake8-comprehensions>=3.17",
+    "flake8-debugger>=4.1",
+    "flake8-eradicate>=1.5",
+    "flake8-fixme>=1.1.1",
+    "flake8-if-statements>=1",
+    "flake8-print>=5",
+    "flake8-quotes>=3.4",
+    "flake8-string-format>=0.4",
+    "flake8-tidy-imports>=4.12",
+    "flake8-typing-imports>=1.17",
+    "flake8-variables-names>=0.0.6",
+    "dlint>=0.16",
+    "mypy>=1.15",
+]
+audit = ["pip-audit>=2.9"]
+dev = [
+    { include-group = "test" },
+    { include-group = "lint" },
+    { include-group = "audit" },
+    "pre-commit>=4",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.hatch.version]
+path = "flake8_fine_pytest/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["flake8_fine_pytest"]
+
+[tool.hatch.build.targets.sdist]
+include = ["flake8_fine_pytest", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.flake8]
+max-complexity = 8
+max-line-length = 120
+extend-ignore = ["W503", "E203"]
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    "node_modules",
+    "tests/test_files",
+]
+max-annotations-complexity = 4
+adjustable-default-max-complexity = 8
+allowed_test_directories = ["test_unit", "test_integration"]
+var_names_exclude_pathes = ["node_modules", ".venv", "venv"]
+ban-relative-imports = true
+min_python_version = "3.10"
+per-file-ignores = [
+    "__init__.py:F401",
+    "tests/*:TAE001,CFQ002",
+]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_no_return = false
+check_untyped_defs = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+allow_redefinition = true
+exclude = "^(build|dist|\\.venv|venv|tests)/"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tests/test_files"]
+addopts = "--strict-markers --strict-config"
+xfail_strict = true
+
+[tool.coverage.run]
+source = ["flake8_fine_pytest"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+exclude_also = ["if TYPE_CHECKING:"]

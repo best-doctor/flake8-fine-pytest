@@ -1,5 +1,6 @@
 import ast
 
+from flake8_fine_pytest.common_types import AnyFunctionDef
 from flake8_fine_pytest.watchers.base import BaseWatcher
 
 
@@ -11,38 +12,17 @@ class AssertCountWatcher(BaseWatcher):
     )
 
     def run(self) -> None:
-        self.allowed_assert_count = self.options.allowed_assert_count
-        self._validate_assert_count(self.tree)
+        allowed_assert_count = self.options.allowed_assert_count
 
-    def _validate_assert_count(self, tree: ast.AST) -> None:
-        for node in ast.walk(tree):
-            if self._should_check_node(node) is False:
-                continue
+        for node in self._iterate_over_test_functions(self.tree):
+            if self._get_actual_asserts_count(node) > allowed_assert_count:
+                self._note_an_error(node, allowed_assert_count)
 
-            if self._is_valid(node) is False:  # type: ignore
-                self._note_an_error(node)
+    def _get_actual_asserts_count(self, node: AnyFunctionDef) -> int:
+        return sum(isinstance(body_element, ast.Assert) for body_element in node.body)
 
-    def _is_valid(self, node: ast.FunctionDef) -> bool:
-        asserts_count = self._get_actual_asserts_count(node)
-
-        return self.allowed_assert_count >= asserts_count
-
-    def _get_actual_asserts_count(self, node: ast.FunctionDef) -> int:
-        asserts_count = 0
-
-        for body_element in node.body:
-            if isinstance(body_element, ast.Assert):
-                asserts_count += 1
-
-        return asserts_count
-
-    def _note_an_error(self, node: ast.AST) -> None:
-        error_message = self._get_error_message(node)  # type: ignore
-        self.add_error((node.lineno, 0, error_message))
-
-    def _get_error_message(self, node: ast.FunctionDef) -> str:
-        invalid_test_name = node.name
-
-        return self.error_template.format(
-            test_name=invalid_test_name, allowed_assert_count=self.allowed_assert_count,
+    def _note_an_error(self, node: AnyFunctionDef, allowed_assert_count: int) -> None:
+        error_message = self.error_template.format(
+            test_name=node.name, allowed_assert_count=allowed_assert_count,
         )
+        self.add_error((node.lineno, 0, error_message))

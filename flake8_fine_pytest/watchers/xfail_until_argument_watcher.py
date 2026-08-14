@@ -1,8 +1,49 @@
 import ast
 from datetime import date
-from typing import List, Any, Optional
 
-from flake8_fine_pytest.watchers.base import BaseWatcher
+from flake8_fine_pytest.ast_helpers import is_xfail_mark
+from flake8_fine_pytest.watchers.base import FUNCTION_DEF_NODES, BaseWatcher
+
+DATE_FIELD_NAMES = ('year', 'month', 'day')
+
+
+def _resolve_date_arguments(call: ast.Call) -> list[object] | None:
+    """Maps a `date()` call onto its year, month and day literal values."""
+    keywords = {keyword.arg: keyword.value for keyword in call.keywords}
+
+    argument_nodes: list[ast.expr | None] = list(call.args)
+    argument_nodes.extend(
+        keywords.get(name) for name in DATE_FIELD_NAMES[len(argument_nodes):]
+    )
+
+    if len(argument_nodes) != len(DATE_FIELD_NAMES):
+        return None
+
+    if not all(isinstance(node, ast.Constant) for node in argument_nodes):
+        return None
+
+    return [node.value for node in argument_nodes]  # type: ignore[union-attr]
+
+
+def parse_date_call(node: ast.expr) -> date | None:
+    """
+    Builds a date out of a literal `date(year, month, day)` call.
+
+    Both positional and keyword arguments are understood. Returns None whenever
+    the call cannot be resolved statically, e.g. when its arguments are names or
+    expressions rather than plain number literals.
+    """
+    if not isinstance(node, ast.Call):
+        return None
+
+    arguments = _resolve_date_arguments(node)
+    if arguments is None:
+        return None
+
+    try:
+        return date(*arguments)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return None
 
 
 class XfailUntilArgumentHasCorrectFormatValidator:
@@ -11,93 +52,60 @@ class XfailUntilArgumentHasCorrectFormatValidator:
     )
 
     @classmethod
-    def validate(cls, until_decorator_keyword: ast.keyword) -> str:
-        until_args_object = until_decorator_keyword.value
-
-        if isinstance(until_args_object, ast.Call) is False:
+    def validate(cls, until_decorator_keyword: ast.keyword) -> str | None:
+        if not isinstance(until_decorator_keyword.value, ast.Call):
             return cls.error_template
+        return None
 
 
 class XfailUntilArgumentFreshEnoughValidator:
-    error_template = (
-        'FP008 stale xfail mark'
-    )
+    error_template = 'FP008 stale xfail mark'
 
     @classmethod
-    def _get_xfail_until_date_with_backward_compatibility(cls, until_date_object_args: Any) -> date:
-        """
-        Parses until date constants.
+    def validate(cls, until_decorator_keyword: ast.keyword) -> str | None:
+        until_date = parse_date_call(until_decorator_keyword.value)
 
-        We need this because of ast.Num deprecation from python3.8
-        https://greentreesnakes.readthedocs.io/en/latest/nodes.html#Num
-        """
-        year_node, month_node, day_node = until_date_object_args
-
-        if isinstance(year_node, ast.Num):
-            return date(year_node.n, month_node.n, day_node.n)  # type: ignore
-
-        if isinstance(year_node, ast.Constant):
-            return date(year_node.value, month_node.value, day_node.value)
-
-    @classmethod
-    def validate(cls, until_decorator_keyword: ast.keyword) -> Optional[str]:
-        until_args_object = until_decorator_keyword.value
-
-        if isinstance(until_args_object, ast.Call) is False:
-            return None
-
-        until_date = cls._get_xfail_until_date_with_backward_compatibility(until_args_object.args)  # type: ignore
-
-        if date.today() > until_date:
+        if until_date is not None and date.today() > until_date:
             return cls.error_template
+        return None
 
 
 class XfailUntilArgumentWatcher(BaseWatcher):
     config_option = 'xfail_check_until'
-    error_template = (
-        'FP006 xfail mark has wrong format. It should has `until` argument'
-    )
+    error_template = 'FP006 xfail mark has wrong format. It should has `until` argument'
     required_xfail_until_argument_name = 'until'
-    validators = [
+    validators = (
         XfailUntilArgumentHasCorrectFormatValidator,
         XfailUntilArgumentFreshEnoughValidator,
-    ]
+    )
 
     def run(self) -> None:
         for node in ast.walk(self.tree):
-            if isinstance(node, ast.FunctionDef):
-                decorators = node.decorator_list
-                self._validate_decorators(decorators)  # type: ignore
+            if isinstance(node, FUNCTION_DEF_NODES):
+                self._validate_decorators(node.decorator_list)
 
-    def _should_check_node(self, decorator: ast.Call) -> bool:  # type: ignore
-        return (
-            hasattr(decorator, 'func')
-            and hasattr(decorator.func, 'attr')
-            and decorator.func.attr == 'xfail'  # type: ignore
-        )
+    def _is_xfail_decorator(self, decorator: ast.expr) -> bool:
+        return isinstance(decorator, ast.Call) and is_xfail_mark(decorator.func)
 
-    def _validate_decorators(self, decorators: List[ast.Call]) -> None:
+    def _validate_decorators(self, decorators: list[ast.expr]) -> None:
         for decorator in decorators:
-            if self._should_check_node(decorator):
-                self._validate_xfail_decorator_args(decorator)
+            if self._is_xfail_decorator(decorator):
+                self._validate_xfail_decorator_args(decorator)  # type: ignore[arg-type]
 
     def _validate_xfail_decorator_args(self, decorator: ast.Call) -> None:
-        xfail_args = [
-            keyword.arg for keyword in decorator.keywords if hasattr(keyword, 'arg')
-        ]
-
-        if self.required_xfail_until_argument_name not in xfail_args:
-            return self.add_error((decorator.lineno, 0, self.error_template))
-
         for keyword in decorator.keywords:
             if keyword.arg == self.required_xfail_until_argument_name:
-                return self._validate_xfail_decorator_until_argument(decorator, keyword)
+                self._validate_xfail_decorator_until_argument(decorator, keyword)
+                return
+
+        self.add_error((decorator.lineno, 0, self.error_template))
 
     def _validate_xfail_decorator_until_argument(
         self, decorator: ast.Call, until_keyword: ast.keyword,
     ) -> None:
         for validator in self.validators:
-            error = validator.validate(until_keyword)  # type: ignore
+            error = validator.validate(until_keyword)
 
             if error:
-                return self.add_error((decorator.lineno, 0, error))
+                self.add_error((decorator.lineno, 0, error))
+                return
