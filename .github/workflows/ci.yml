@@ -18,6 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # Runs before `uv sync` so the .venv it creates never ends up in the glob below.
+      - name: Lint markdown
+        uses: DavidAnson/markdownlint-cli2-action@v24
+        with:
+          globs: |
+            **/*.md
+            !.venv/**
+            !**/node_modules/**
       - uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
@@ -27,10 +35,6 @@ jobs:
         run: uv run flake8 .
       - name: Run mypy
         run: uv run mypy flake8_fine_pytest
-      - name: Lint markdown
-        uses: DavidAnson/markdownlint-cli2-action@v24
-        with:
-          globs: '**/*.md'
 
   test:
     runs-on: ubuntu-latest
