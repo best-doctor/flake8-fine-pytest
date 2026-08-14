@@ -30,12 +30,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: test
-    environment:
-      name: pypi
-      url: https://pypi.org/p/flake8-fine-pytest
-    permissions:
-      # Required for PyPI trusted publishing; no API token needs to be stored.
-      id-token: write
     steps:
       - uses: actions/checkout@v7
       - name: Install uv
@@ -46,3 +40,7 @@ jobs:
         run: uv build
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Classic API-token auth: no PyPI trusted-publisher registration needed.
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
