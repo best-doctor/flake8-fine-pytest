@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - '*'
+  # Lets a maintainer retrigger a release from the Actions tab without having
+  # to move a tag, e.g. after fixing the PYPI_API_TOKEN secret.
+  workflow_dispatch: {}
 
 jobs:
   test:
