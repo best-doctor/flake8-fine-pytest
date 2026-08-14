@@ -1,0 +1,20 @@
+CHANGELOG.md
+  s_c236b7c4744b6a::t_b9494280a3c37d 8
+  s_c236b7c4744b6a::t_f6781fd8455cc6 104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "5521d73f3a100d8e5a8b178c8ea2fc4d0546f937",
+  "prompts": {},
+  "sessions": {
+    "s_c236b7c4744b6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c968b2aa-8837-4db1-a5b2-496618decee5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Vladislav Katolyk <v.katolyk@bestdoctor.ru>"
+    }
+  }
+}
