@@ -1,0 +1,158 @@
+.github/workflows/publish.yml
+  s_c236b7c4744b6a::t_08ea865133a5fb 12,14-23,25-28,32-35,38-42
+  s_c236b7c4744b6a::t_f33bf4fc5fa721 13,24,37
+tests/test_integration/test_unique_names.py
+  s_c236b7c4744b6a::t_afbb428020d3aa 1-5,9-19,23-34,38-39
+  s_c236b7c4744b6a::t_61098fb8a7397b 6-8,20-22,35-37
+.markdownlint.json
+  s_c236b7c4744b6a::t_179f69dbc4f2b9 1-3,5,7-8
+  s_c236b7c4744b6a::t_d76a03f1f5bef4 4
+  s_c236b7c4744b6a::t_8626f1f0065211 6
+.github/workflows/ci.yml
+  s_c236b7c4744b6a::t_b471711ce7dd19 61,63
+  s_c236b7c4744b6a::t_f33bf4fc5fa721 21,43,56
+  s_c236b7c4744b6a::t_f88e1f8e925f52 25,48,60
+  s_c236b7c4744b6a::t_a7a6ad28c12944 1-20,22-24,26-42,44-47,49-55,57-59,62
+flake8_fine_pytest/watchers/assert_count.py
+  s_c236b7c4744b6a::t_015428b686d763 3,15,17-19,21-22,24-26,28
+flake8_fine_pytest/__init__.py
+  s_c236b7c4744b6a::t_1d96d929f14e64 1
+flake8_fine_pytest/watchers/unique_test_names.py
+  s_c236b7c4744b6a::t_3dd448a8c323f9 6,13-14
+  s_c236b7c4744b6a::t_fd280a2b6440c5 9-12,15-16
+flake8_fine_pytest/common_types.py
+  s_c236b7c4744b6a::t_44720b2b0211f1 1-3,5,7-11
+tests/conftest.py
+  s_c236b7c4744b6a::t_def152c2f7ac0c 1,3-4,10,12-20,23-27,29,32-37,39-40,45-51
+  s_c236b7c4744b6a::t_e8de6f1b4a3397 52-53
+tests/test_integration/test_asserts_count.py
+  s_c236b7c4744b6a::t_d529cfe4f02a3c 1-15,19-22,25-31,35-36
+  s_c236b7c4744b6a::t_61098fb8a7397b 16-18,32-34
+tests/test_unit/test_usefixtures.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 20-22
+  s_c236b7c4744b6a::t_fe3cfad9c0f442 1-19,23-26
+flake8_fine_pytest/utils.py
+  s_c236b7c4744b6a::t_2f16c822e46975 4
+flake8_fine_pytest/checker.py
+  s_c236b7c4744b6a::t_8908f51d6b42e7 22-23
+  s_c236b7c4744b6a::t_515127c0a99668 2
+  s_c236b7c4744b6a::t_4bbc5f9e05780b 7-8,10,12
+  s_c236b7c4744b6a::t_d20133142cae3b 92,102
+tests/test_files/test_async_with_fixtures.py
+  s_c236b7c4744b6a::t_d0b5761a396e6a 1-2
+tests/test_files/test_xfail_until_not_a_literal.py
+  s_c236b7c4744b6a::t_b6945f6600b80c 14-19
+  s_c236b7c4744b6a::t_cd451046eb61fb 1-13
+tests/test_files/test_async_not_unique.py
+  s_c236b7c4744b6a::t_b2372c5df0cad4 1-6
+README.md
+  s_c236b7c4744b6a::t_06069613985bf0 3,9-15,17-64,73-74,76,78-79,86,88,95,97,104-106,109-111,113,120,127,133-139,141,143-144,146,173,197-198
+  s_c236b7c4744b6a::t_d44a517365e05d 16
+LICENSE
+  s_c236b7c4744b6a::t_9c9e5b6d940a17 21
+.pre-commit-config.yaml
+  s_c236b7c4744b6a::t_02386a3d018d5e 27-29,34,43,51
+  s_c236b7c4744b6a::t_ed7a3d9c223bdf 1-26,30-33,35-36,39-42,44-50,52-55
+  s_c236b7c4744b6a::t_9dc1b898aa96ad 37-38
+tests/test_unit/test_modules_structure.py
+  s_c236b7c4744b6a::t_1ec79ef4ba1718 1-17,21-22
+  s_c236b7c4744b6a::t_61098fb8a7397b 18-20
+tests/test_files/test_xfail_with_dynamic_reason.py
+  s_c236b7c4744b6a::t_59a4233d2c9b10 1-13
+tests/test_files/test_complex_signature_tests.py
+  s_c236b7c4744b6a::t_9c9e5b6d940a17 28
+CHANGELOG.md
+  s_c236b7c4744b6a::t_1766e3ba5888aa 1-38,42-105
+  s_c236b7c4744b6a::t_14f6c62b490652 39-41
+flake8_fine_pytest/ast_helpers.py
+  s_c236b7c4744b6a::t_4b71329fce44ae 3-4,7-8,11-15,18-20,22-25,28-30,32-36,38-39,41-55
+Makefile
+  s_c236b7c4744b6a::t_e75a90b0a29636 1-6,8-11,14,17,20,25
+  s_c236b7c4744b6a::t_9755bf17bd7489 23
+flake8_fine_pytest/watchers/signature_complexity.py
+  s_c236b7c4744b6a::t_1c3f481d2d1164 1,13,15-17,19-21,23
+tests/test_unit/test_xfail_until_argument_watcher.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 46-48
+  s_c236b7c4744b6a::t_539d99c7006041 1-13,17-19,22-29,33-35,38-45,49-52
+  s_c236b7c4744b6a::t_277b66f2e06332 14-16,20-21,30-32,36-37
+tests/test_files/test_async_too_many_asserts.py
+  s_c236b7c4744b6a::t_92231345f0b876 1-8
+tests/test_integration/test_signature_complexity.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 3-5,22-24
+  s_c236b7c4744b6a::t_9bd47caeeeea96 1-2,6-12,17-21,25-26
+tests/test_unit/test_ast_helpers.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 40-42,54-56
+  s_c236b7c4744b6a::t_1961ba18a88948 1-18,21-30,33-39,43-53,57-75
+  s_c236b7c4744b6a::t_6cb2feea861764 19-20,31-32
+tests/test_unit/test_utils.py
+  s_c236b7c4744b6a::t_f026a7f6ea9e5a 1-19,23-24
+  s_c236b7c4744b6a::t_61098fb8a7397b 20-22
+flake8_fine_pytest/watchers/base.py
+  s_c236b7c4744b6a::t_6855e19aef6452 23
+  s_c236b7c4744b6a::t_a115e28d1ef927 3,6-7,12,17,27,31-32,35,39-41
+  s_c236b7c4744b6a::t_f84dc128250f5e 28
+flake8_fine_pytest/watchers/xfail_decorator.py
+  s_c236b7c4744b6a::t_39f533bda931df 1,4,13-14,16-18,20-22
+tests/test_integration/test_xfail_reason.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 16-18,27-29,40-42
+  s_c236b7c4744b6a::t_73a3a6197f3e02 5,7-8,10,12-13,15,19-20,22-26,30-31,35-36,38-39,43-44
+flake8_fine_pytest/watchers/modules_structure.py
+  s_c236b7c4744b6a::t_b77426e8dd3187 4,25-26,28-32
+.github/ISSUE_TEMPLATE/bug_report.md
+  s_c236b7c4744b6a::t_5b178b48f84304 14,16-20,22-27,29,31-34
+tests/test_integration/test_flake8_plugin.py
+  s_c236b7c4744b6a::t_d5b05add26613a 43
+  s_c236b7c4744b6a::t_3a46b237ed6c8b 1-24,28-36,40-42,44-46
+  s_c236b7c4744b6a::t_61098fb8a7397b 25-27,37-39
+tests/test_integration/test_stale_xfail_mark.py
+  s_c236b7c4744b6a::t_c602585186b1b3 23-27,29-34
+  s_c236b7c4744b6a::t_61098fb8a7397b 40-42,55-57,76-78
+  s_c236b7c4744b6a::t_7476cbcbc0c05a 1-22,28,35-39,43-44,47-48,51-54,58-59,61-63,66-68,72-75,79-80
+tests/test_files/test_class_edge_cases.py
+  s_c236b7c4744b6a::t_7626bfc723364e 1-12
+tests/test_files/test_stale_xfail_keyword_until.py
+  s_c236b7c4744b6a::t_9a222fee214cbc 1-8
+.editorconfig
+  s_c236b7c4744b6a::t_9c9e5b6d940a17 18
+pyproject.toml
+  s_c236b7c4744b6a::t_82b9c2260346e3 77-79
+  s_c236b7c4744b6a::t_edfa4b7f9ca1ad 87
+  s_c236b7c4744b6a::t_e864ba9b516891 1-34,36-76,80-86,88-136
+  s_c236b7c4744b6a::t_424739ff0e648a 35
+flake8_fine_pytest/watchers/usefixtures.py
+  s_c236b7c4744b6a::t_52e2097a90f4d3 2,4,8-12,23-24,28,37,39,43-44,47,50-51,59-62,69
+tests/test_integration/test_module_structure.py
+  s_c236b7c4744b6a::t_de35585fba550d 4-17,21,24,27-31,35-43
+  s_c236b7c4744b6a::t_61098fb8a7397b 18-20,32-34
+tests/test_integration/test_usefixtures.py
+  s_c236b7c4744b6a::t_221926f6b863b4 39-40,44-47,50,52
+  s_c236b7c4744b6a::t_61098fb8a7397b 16-18,32-34,41-43,57-59
+  s_c236b7c4744b6a::t_46802df6ceae1b 1-15,19-21,25-27,30-31,35-36,55-56,60-61
+  s_c236b7c4744b6a::t_723f73436d3ddd 38
+tests/test_unit/test_checker.py
+  s_c236b7c4744b6a::t_61098fb8a7397b 33-35,60-61,73-75,83-85
+  s_c236b7c4744b6a::t_7e6af8325ff176 44-58,62,68
+  s_c236b7c4744b6a::t_1d14eddf54e719 1-32,36-43,59,63-67,69-72,76-82,86-90
+flake8_fine_pytest/watchers/xfail_until_argument_watcher.py
+  s_c236b7c4744b6a::t_0d77c2a12a6a2e 4-5,28-30,35,37,41,43,45-46,48-52,55-58,61-62,64-68,70,75,77,80,84-85,87-88,90-93,95,98-101,107,110-111
+  s_c236b7c4744b6a::t_21baeee1d8ff65 7,9-16,19-20,22-23,25,32-34,36,39-40,44
+  s_c236b7c4744b6a::t_5f0cfa1b4d7aac 31
+uv.lock
+  s_c236b7c4744b6a::t_4090014c541495 1-1659
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "780d46035e72a1abce813cfe67e1e072485a1fd5",
+  "prompts": {},
+  "sessions": {
+    "s_c236b7c4744b6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c968b2aa-8837-4db1-a5b2-496618decee5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Vladislav Katolyk <v.katolyk@bestdoctor.ru>"
+    }
+  }
+}
